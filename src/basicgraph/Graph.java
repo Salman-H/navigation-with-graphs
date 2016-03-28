@@ -279,13 +279,19 @@ public abstract class Graph {
 		GraphAdjList graphFromFile = new GraphAdjList();
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", graphFromFile);
 		System.out.println(graphFromFile);
+		
+		int vertex = 4;
+		System.out.println("****");
+		System.out.println("2-Hop Neighbors of : " + vertex);
+		System.out.println(graphFromFile.getDistance2(vertex));
+		
 
 		System.out.println("Observe all degrees are <= 12.");
 		System.out.println("****");
 
 		System.out.println("\n****");
 
-		 
+		 /*
 		// You can test with real road data here. Use the data files in
 		// data/maps
 
@@ -300,7 +306,7 @@ public abstract class Graph {
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
-		
+		*/
 		
 	}
 }
