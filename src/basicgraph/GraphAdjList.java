@@ -13,7 +13,7 @@ import java.util.Set;
  * edges via adjacency lists.
  * 
  * @author UCSD MOOC development team
- * @author Salman Hashmi
+ * @author Salman Hashmi 
  *
  */
 public class GraphAdjList extends Graph {

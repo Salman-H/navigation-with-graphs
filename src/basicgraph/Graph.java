@@ -1,6 +1,7 @@
 package basicgraph;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -126,7 +127,27 @@ public abstract class Graph {
 	 */
 	public List<Integer> degreeSequence() {
 		// XXX: Implement in part 1 of week 1
-		return null;
+		
+		List<Integer> degreeSequenceList = new LinkedList<Integer>();
+		
+		for (int v = 0; v < getNumVertices(); v++) {
+			int inDegree = getNeighbors(v).size();
+			int outDegree = getInNeighbors(v).size();
+			int degree = inDegree + outDegree;
+			degreeSequenceList.add(degree);
+		}
+		
+		// sort degreeSequenceList in ascending order
+		//Collections.reverse(degreeSequenceList);
+		Collections.sort(degreeSequenceList, Collections.reverseOrder());
+		
+		System.out.println("");
+		System.out.println(" *************** Inside degreeSequence() *****************");
+		System.out.println("Degree Sequence: " + degreeSequenceList);
+		System.out.println("");
+		
+		return degreeSequenceList;
+		
 	}
 
 	/**
@@ -244,7 +265,7 @@ public abstract class Graph {
 	}
 
 	public static void main(String[] args) {
-		GraphLoader.createIntersectionsFile("data/maps/myucsd.map", "data/intersections/myucsd.intersections");
+		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
 
 		// For testing of Part 1 functionality
 		// Add your tests here to make sure your degreeSequence method is
@@ -264,6 +285,7 @@ public abstract class Graph {
 
 		System.out.println("\n****");
 
+		 
 		// You can test with real road data here. Use the data files in
 		// data/maps
 
@@ -278,6 +300,7 @@ public abstract class Graph {
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
-
+		
+		
 	}
 }

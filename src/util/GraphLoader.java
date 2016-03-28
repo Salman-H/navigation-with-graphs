@@ -556,18 +556,19 @@ public class GraphLoader {
 	}
 
 	public static void main(String[] args) {
-		GraphLoader.createIntersectionsFile("data/maps/hollywood_small.map",
-				"data/intersections/hollywood_small.intersections");
-		GraphLoader.createIntersectionsFile("data/maps/new_york.map", "data/intersections/new_york.intersections");
-		GraphLoader.createIntersectionsFile("data/maps/san_diego.map", "data/intersections/san_diego.intersections");
-		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
+		//GraphLoader.createIntersectionsFile("data/maps/hollywood_small.map",
+		//		"data/intersections/hollywood_small.intersections");
+		//GraphLoader.createIntersectionsFile("data/maps/new_york.map", "data/intersections/new_york.intersections");
+		//GraphLoader.createIntersectionsFile("data/maps/san_diego.map", "data/intersections/san_diego.intersections");
+		//GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
 
 		// To use this method to convert your custom map files to custom
 		// intersections files
 		// just change YOURFILE in the strings below to be the name of the file
 		// you saved.
 		// You can comment out the other method calls above to save time.
-		GraphLoader.createIntersectionsFile("data/maps/Montreal.map", "data/intersections/Montreal.intersections");
+		//GraphLoader.createIntersectionsFile("data/maps/Montreal.map", "data/intersections/Montreal.intersections");
+		GraphLoader.createIntersectionsFile("data/airports/Montreal.map", "data/intersections/Montreal.intersections");
 
 	}
 
