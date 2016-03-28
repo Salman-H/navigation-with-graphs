@@ -138,16 +138,9 @@ public abstract class Graph {
 		}
 		
 		// sort degreeSequenceList in ascending order
-		//Collections.reverse(degreeSequenceList);
 		Collections.sort(degreeSequenceList, Collections.reverseOrder());
 		
-		System.out.println("");
-		System.out.println(" *************** Inside degreeSequence() *****************");
-		System.out.println("Degree Sequence: " + degreeSequenceList);
-		System.out.println("");
-		
-		return degreeSequenceList;
-		
+		return degreeSequenceList;	
 	}
 
 	/**
@@ -276,7 +269,10 @@ public abstract class Graph {
 
 		System.out.println("****");
 		System.out.println("Roads / intersections:");
+		
 		GraphAdjList graphFromFile = new GraphAdjList();
+		//GraphAdjMatrix graphFromFile = new GraphAdjMatrix();
+		
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", graphFromFile);
 		System.out.println(graphFromFile);
 		

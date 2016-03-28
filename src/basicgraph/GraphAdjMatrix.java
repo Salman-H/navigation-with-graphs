@@ -1,6 +1,7 @@
 package basicgraph;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,18 @@ public class GraphAdjMatrix extends Graph {
 	 * @return List<Integer> a list of indices of vertices.
 	 */
 	public List<Integer> getDistance2(int v) {
-		return null;
+		List<Integer> twoHopNeighborsList = new LinkedList<Integer>();
+		
+		System.out.println("");
+		System.out.println(" *************** Inside getDistance2() pf GraphAdjMatrix *****************");
+		
+		for (int i = 0; i < getNumVertices(); i++) {
+			for (int j = 0; j < adjMatrix[v][i]; j++) {
+				// Instead of adding i directly like in getNeighbors(), add neighbors of i
+				twoHopNeighborsList.addAll(getNeighbors(i));
+			}
+		}
+		return twoHopNeighborsList;
 	}
 
 	/**
