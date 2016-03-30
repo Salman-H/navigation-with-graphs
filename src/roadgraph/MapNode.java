@@ -58,11 +58,12 @@ public class MapNode {
 	 *  @return A String representation of the MapNode
 	 */
 	public String toString() {
-		String s = "\n\n ***************";
+		String s = "\n\n ***";
 		s += "MapNode with:";
-		s += "\n\t" + "nodelocation: " + nodeLocation + " -> ";
+		s += "\n\t" + "nodelocation: " + nodeLocation;
+		s += "\n\t" + "nodeEdgesList";
 		for (MapEdge edge: nodeEdgesList) {
-			s += "\t" + edge;
+			s += edge;
 		}
 		return s;
 	}

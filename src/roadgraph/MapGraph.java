@@ -85,6 +85,7 @@ public class MapGraph {
 		if (graphNodesHashMap.containsKey(location) || location == null) return false;
 		// otherwise..
 		graphNodesHashMap.put(location, new MapNode(location));
+		numNodes++;
 		return true;
 	}
 
@@ -122,6 +123,7 @@ public class MapGraph {
 		// associate the edge with the MapNode with location == from
 		MapNode mapNode = graphNodesHashMap.get(from);
 		mapNode.addEdgeToNode(newEdge);
+		numEdges++;
 	}
 	
 	/**

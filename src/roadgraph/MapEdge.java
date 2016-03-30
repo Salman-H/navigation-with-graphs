@@ -89,12 +89,13 @@ public class MapEdge {
 	 *  @return A String representation of the MapEdge
 	 */
 	public String toString() {
-		String s = "MapEdge with:";
-		s += "\n\t" + "startPoint: " + startPoint;
-		s += "\n\t" + "endPoint: " + endPoint;
-		s += "\n\t" + "roadName: " + roadName;
-		s += "\n\t" + "roadType: " + roadType;
-		s += "\n\t" + "roadDistance: " + roadDistance;
+		String s = "\n\t\tMapEdge with:";
+		s += "\n\t\t" + "startPoint: " + startPoint;
+		s += "\n\t\t" + "endPoint: " + endPoint;
+		s += "\n\t\t" + "roadName: " + roadName;
+		s += "\n\t\t" + "roadType: " + roadType;
+		s += "\n\t\t" + "roadDistance: " + roadDistance;
+		s += "\n";
 		return s;
 	}
 
