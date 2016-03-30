@@ -118,7 +118,10 @@ public class MapGraph {
 		}
 		// create new edge
 		MapEdge newEdge = new MapEdge(from, to, roadName, roadType, length);
-
+		
+		// associate the edge with the MapNode with location == from
+		MapNode mapNode = graphNodesHashMap.get(from);
+		mapNode.addEdgeToNode(newEdge);
 	}
 
 	/**
