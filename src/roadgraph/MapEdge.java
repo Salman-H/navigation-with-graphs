@@ -6,7 +6,11 @@ package roadgraph;
 import geography.GeographicPoint;
 
 /**
+ * MapEdge.java
+ * 
  * @author Salman Hashmi
+ * 
+ * 		A class to represent an edge/road between two geographic points/intersections in a graph/map 
  *
  */
 public class MapEdge {
