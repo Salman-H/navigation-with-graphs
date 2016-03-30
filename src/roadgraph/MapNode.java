@@ -6,6 +6,7 @@ package roadgraph;
 import geography.GeographicPoint;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * MapNode.java
@@ -26,7 +27,7 @@ public class MapNode {
 	 */
 	public MapNode(GeographicPoint nodeLocation) {
 		this.nodeLocation = nodeLocation;
-		nodeEdgesList = new ArrayList<MapEdge>();
+		nodeEdgesList = new LinkedList<MapEdge>();
 	}
 	
 	/**
