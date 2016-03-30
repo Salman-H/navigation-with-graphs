@@ -1,6 +1,6 @@
 /**
  * @author UCSD MOOC development team
- * #@author Salman Hashmi
+ * @author Salman Hashmi
  * 
  * A class which reprsents a graph of geographic locations
  * Nodes in the graph are intersections between 
@@ -11,6 +11,7 @@ package roadgraph;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.HashMap;
 
 import geography.GeographicPoint;
 import util.GraphLoader;
@@ -25,12 +26,18 @@ import util.GraphLoader;
  */
 public class MapGraph {
 	// TODO: Add your member variables here in WEEK 2
+	private HashMap<GeographicPoint, MapNode> graphNodesHashMap;
+	private int numNodes;
+	private int numEdges;
 
 	/**
 	 * Create a new empty MapGraph
 	 */
 	public MapGraph() {
 		// TODO: Implement in this constructor in WEEK 2
+		graphNodesHashMap = new HashMap<GeographicPoint, MapNode>();
+		numNodes = 0;
+		numEdges = 0;
 	}
 
 	/**

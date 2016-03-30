@@ -21,6 +21,7 @@ public class MapNode {
 	
 	/**
 	 * Constructor
+	 * 
 	 * @param nodeLocation
 	 */
 	public MapNode(GeographicPoint nodeLocation) {
