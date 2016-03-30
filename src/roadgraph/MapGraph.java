@@ -1,5 +1,6 @@
 /**
- * @author UCSD MOOC development team and YOU
+ * @author UCSD MOOC development team
+ * #@author Salman Hashmi
  * 
  * A class which reprsents a graph of geographic locations
  * Nodes in the graph are intersections between 
@@ -15,7 +16,8 @@ import geography.GeographicPoint;
 import util.GraphLoader;
 
 /**
- * @author UCSD MOOC development team and YOU
+ * @author UCSD MOOC development team
+ * @author Salman Hashmi
  * 
  *         A class which represents a graph of geographic locations Nodes in the
  *         graph are intersections between
