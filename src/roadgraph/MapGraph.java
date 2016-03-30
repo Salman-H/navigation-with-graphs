@@ -82,7 +82,10 @@ public class MapGraph {
 	 */
 	public boolean addVertex(GeographicPoint location) {
 		// TODO: Implement this method in WEEK 2
-		return false;
+		if (graphNodesHashMap.containsKey(location) || location == null) return false;
+		// otherwise..
+		graphNodesHashMap.put(location, new MapNode(location));
+		return true;
 	}
 
 	/**
