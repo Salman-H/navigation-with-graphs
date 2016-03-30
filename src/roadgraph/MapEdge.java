@@ -28,9 +28,12 @@ public class MapEdge {
 	 * @param startPoint
 	 * @param endPoint
 	 */
-	public MapEdge(GeographicPoint startPoint, GeographicPoint endPoint) {
+	public MapEdge(GeographicPoint startPoint, GeographicPoint endPoint, String roadName, String roadType, double roadDistance) {
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;
+		this.roadName = roadName;
+		this.roadType = roadType;
+		this.roadDistance = roadDistance;
 	}
 	
 	/**
