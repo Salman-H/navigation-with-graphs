@@ -57,7 +57,7 @@ public class MapGraph {
 	 */
 	public Set<GeographicPoint> getVertices() {
 		// TODO: Implement this method in WEEK 2
-		return null;
+		return graphNodesHashMap.keySet();
 	}
 
 	/**
