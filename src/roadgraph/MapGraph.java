@@ -123,6 +123,17 @@ public class MapGraph {
 		MapNode mapNode = graphNodesHashMap.get(from);
 		mapNode.addEdgeToNode(newEdge);
 	}
+	
+	/**
+	 * Return a String representation of the graph
+	 * 
+	 * @return A string representation of the graph
+	 */
+	public String toString() {
+		String s = "\nGraph with " + numNodes + " vertices and " + numEdges + " edges.\n";
+		s += "\n\t" + graphNodesHashMap;
+		return s;
+	}
 
 	/**
 	 * Find the path from start to goal using breadth first search
@@ -251,6 +262,7 @@ public class MapGraph {
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
 		System.out.println("DONE.");
+		System.out.println(theMap);
 
 		// You can use this method for testing.
 
