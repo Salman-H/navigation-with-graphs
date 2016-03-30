@@ -192,6 +192,8 @@ public class Maze {
 	}
 
 	public List<MazeNode> bfs(int startRow, int startCol, int endRow, int endCol) {
+		
+		// Initialize everything
 		MazeNode start = cells[startRow][startCol];
 		MazeNode goal = cells[endRow][endCol];
 
@@ -199,12 +201,43 @@ public class Maze {
 			System.out.println("Start or goal node is null!  No path exists.");
 			return new LinkedList<MazeNode>();
 		}
+		
+		HashMap<MazeNode, MazeNode> parentMap = new HashMap<MazeNode, MazeNode>();
+		boolean found = bfsSearch(start, goal, parentMap);
 
+		if (!found) {
+			System.out.println("No path exists");
+			return new LinkedList<MazeNode>();
+		}
+		
+		// reconstruct the path
+		return constructBfsPath(start, goal, parentMap);
+	}
+	
+	// reconstruct the path
+		private List<MazeNode> constructBfsPath(MazeNode start, MazeNode goal,
+				HashMap<MazeNode, MazeNode> parentMap)
+		{
+			LinkedList<MazeNode> path = new LinkedList<MazeNode>();
+			MazeNode curr = goal;
+			while (curr != start) {
+				path.addFirst(curr);
+				curr = parentMap.get(curr);
+			}
+			path.addFirst(start);
+			return path;
+		}
+	
+	// do the actual bfs serach and fill the HashMap parentMap along the way
+	private boolean bfsSearch(MazeNode start, MazeNode goal,
+			HashMap<MazeNode, MazeNode> parentMap)
+	{
 		HashSet<MazeNode> visited = new HashSet<MazeNode>();
 		Queue<MazeNode> toExplore = new LinkedList<MazeNode>();
-		HashMap<MazeNode, MazeNode> parentMap = new HashMap<MazeNode, MazeNode>();
 		toExplore.add(start);
 		boolean found = false;
+		
+		// Do the search
 		while (!toExplore.isEmpty()) {
 			MazeNode curr = toExplore.remove();
 			if (curr == goal) {
@@ -222,21 +255,9 @@ public class Maze {
 				}
 			}
 		}
-
-		if (!found) {
-			System.out.println("No path exists");
-			return new ArrayList<MazeNode>();
-		}
-		// reconstruct the path
-		LinkedList<MazeNode> path = new LinkedList<MazeNode>();
-		MazeNode curr = goal;
-		while (curr != start) {
-			path.addFirst(curr);
-			curr = parentMap.get(curr);
-		}
-		path.addFirst(start);
-		return path;
+		return found;
 	}
+	
 
 	/*
 	 * public List<MazeNode> dfsRefactored(int startRow, int startCol, int
