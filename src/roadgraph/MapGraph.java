@@ -111,6 +111,12 @@ public class MapGraph {
 			throws IllegalArgumentException {
 
 		// TODO: Implement this method in WEEK 2
+		if ( from == null || to == null || roadName == null || roadType == null
+				|| !graphNodesHashMap.containsKey(from) || !graphNodesHashMap.containsKey(to) 
+				|| length < 0) {
+			throw new IllegalArgumentException();
+		}
+		
 
 	}
 
