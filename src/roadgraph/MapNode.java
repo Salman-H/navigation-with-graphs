@@ -30,6 +30,15 @@ public class MapNode {
 	}
 	
 	/**
+	 * adds the specified MapEdge to the nodeEdgesList of the MapNode
+	 * 
+	 * @param edge
+	 */
+	public void addEdgeToNode(MapEdge edge) {
+		nodeEdgesList.add(edge);
+	}
+	
+	/**
 	 * If this node has an edge with the specified roadName, it returns true; otherwise false
 	 * 
 	 * @param roadName

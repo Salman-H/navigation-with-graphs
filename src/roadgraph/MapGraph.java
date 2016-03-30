@@ -116,7 +116,8 @@ public class MapGraph {
 				|| length < 0) {
 			throw new IllegalArgumentException();
 		}
-		
+		// create new edge
+		MapEdge newEdge = new MapEdge(from, to, roadName, roadType, length);
 
 	}
 
