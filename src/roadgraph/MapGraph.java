@@ -162,7 +162,7 @@ public class MapGraph {
 	public String toString() {
 		
 		String s = "\nGraph with " + numNodes + " vertices and " + numEdges + " edges.\n";
-		//s += "\n\t";
+		s += "\n\t" + graphNodesHashMap.values();
 		return s;
 	}
 
@@ -211,7 +211,8 @@ public class MapGraph {
 		
 		if (start == null || goal == null) {
 			System.out.println("Start or goal node is null!  No path exists.");
-			return new LinkedList<GeographicPoint>();
+			//return new LinkedList<GeographicPoint>();
+			return null;
 		}
 		
 		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<GeographicPoint, GeographicPoint>();
@@ -219,7 +220,8 @@ public class MapGraph {
 
 		if (!found) {
 			System.out.println("No path exists");
-			return new LinkedList<GeographicPoint>();
+			//return new LinkedList<GeographicPoint>();
+			return null;
 		}
 		
 		// reconstruct the path
@@ -235,7 +237,6 @@ public class MapGraph {
 			curr = parentMap.get(curr);
 		}
 		path.addFirst(start);
-		System.out.println("path: " + convertList(path));
 		return path;
 	}
 	
@@ -250,21 +251,17 @@ public class MapGraph {
 		
 		// Do the search
 		while (!toExplore.isEmpty()) {
-			System.out.println("\nqueue: " + convertQueue(toExplore));
-			System.out.println("visited: " + convertHashSet(visited));
 			
 			GeographicPoint curr = toExplore.remove();
-			System.out.println("Comparing values of curr and goal..");
-			System.out.println("curr: " + tempDict.get(curr) + " -> " + curr);
-			System.out.println("goal: " + tempDict.get(goal) + " -> " + goal);
-			System.out.println("curr.distance(goal) == : " + curr.distance(goal));
+			
+			// if the distance between GeographicPoints curr and goal is zero,
+			// this means they are the same point
 			if (curr.distance(goal) == 0) {
 				found = true;
 				break;
 			}
 			MapNode currMapNode = graphNodesHashMap.get(curr);
 			List<GeographicPoint> neighbors = currMapNode.getMapNodeNeighborsAsPoints();
-			System.out.println("curr's neighbors: " + convertList(neighbors));
 			
 			ListIterator<GeographicPoint> it = neighbors.listIterator(neighbors.size());
 			while (it.hasPrevious()) {
@@ -279,30 +276,6 @@ public class MapGraph {
 		return found;
 	}
 	
-	private Queue<Integer> convertQueue(Queue<GeographicPoint> pointQueue) {
-		Queue<Integer> integerQueue = new LinkedList<Integer>();
-		for (GeographicPoint point: pointQueue) {
-			integerQueue.add(tempDict.get(point));
-		}
-		return integerQueue;
-	}
-	
-	private HashSet<Integer> convertHashSet(HashSet<GeographicPoint> pointHashSet) {
-		HashSet<Integer> integerHashSet = new HashSet<Integer>();
-		for (GeographicPoint point: pointHashSet) {
-			integerHashSet.add(tempDict.get(point));
-		}
-		return integerHashSet;
-	}
-	
-	private List<Integer> convertList(List<GeographicPoint> pointList) {
-		List<Integer> integerList = new LinkedList<Integer>();
-		for (GeographicPoint point: pointList) {
-			integerList.add(tempDict.get(point));
-		}
-		return integerList;
-	}
-
 	/**
 	 * Find the path from start to goal using Dijkstra's algorithm
 	 * 
@@ -390,14 +363,14 @@ public class MapGraph {
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
 		System.out.println("DONE.");
-		//System.out.println(theMap);
+		System.out.println(theMap);
 		
 		// test bfs
 		System.out.println("");
 		System.out.println(" ****** Test BFS ******** ");
 		GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
 		GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
-		System.out.println(theMap.bfs(startPoint, endPoint));
+		//System.out.println(theMap.bfs(startPoint, endPoint));
 
 		// You can use this method for testing.
 
