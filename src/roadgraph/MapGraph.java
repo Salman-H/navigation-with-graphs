@@ -9,12 +9,17 @@
 package roadgraph;
 
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 import geography.GeographicPoint;
 import util.GraphLoader;
+
 
 /**
  * @author UCSD MOOC development team
@@ -29,6 +34,19 @@ public class MapGraph {
 	private HashMap<GeographicPoint, MapNode> graphNodesHashMap;
 	private int numNodes;
 	private int numEdges;
+	
+	GeographicPoint zero = new GeographicPoint(1.0, 1.0);
+	GeographicPoint one = new GeographicPoint(4.0, 1.0);
+	GeographicPoint two = new GeographicPoint(4.0, 2.0);
+	GeographicPoint three = new GeographicPoint(5.0, 1.0);
+	GeographicPoint four = new GeographicPoint(6.5, 0.0);
+	GeographicPoint five = new GeographicPoint(8.0, -1.0);
+	GeographicPoint six = new GeographicPoint(4.0, 0.0);
+	GeographicPoint seven = new GeographicPoint(7.0, 3.0);
+	GeographicPoint eight = new GeographicPoint(4.0, -1.0);
+	
+	
+	HashMap<GeographicPoint, Integer> tempDict = new HashMap<GeographicPoint, Integer>();
 
 	/**
 	 * Create a new empty MapGraph
@@ -38,6 +56,16 @@ public class MapGraph {
 		graphNodesHashMap = new HashMap<GeographicPoint, MapNode>();
 		numNodes = 0;
 		numEdges = 0;
+		
+		tempDict.put(zero, 0);
+		tempDict.put(one, 1);
+		tempDict.put(two, 2);
+		tempDict.put(three, 3);
+		tempDict.put(four, 4);
+		tempDict.put(five, 5);
+		tempDict.put(six, 6);
+		tempDict.put(seven, 7);
+		tempDict.put(eight, 8);
 	}
 
 	/**
@@ -132,8 +160,9 @@ public class MapGraph {
 	 * @return A string representation of the graph
 	 */
 	public String toString() {
+		
 		String s = "\nGraph with " + numNodes + " vertices and " + numEdges + " edges.\n";
-		s += "\n\t" + graphNodesHashMap;
+		//s += "\n\t";
 		return s;
 	}
 
@@ -147,6 +176,7 @@ public class MapGraph {
 	 * @return The list of intersections that form the shortest (unweighted)
 	 *         path from start to goal (including both start and goal).
 	 */
+	
 	public List<GeographicPoint> bfs(GeographicPoint start, GeographicPoint goal) {
 		// Dummy variable for calling the search algorithms
 		Consumer<GeographicPoint> temp = (x) -> {
@@ -173,8 +203,104 @@ public class MapGraph {
 
 		// Hook for visualization. See writeup.
 		// nodeSearched.accept(next.getLocation());
+		
+		System.out.println("");
+		System.out.println(" *** bfs ***");
+		System.out.println(" start: " + start);
+		System.out.println(" goal: " + goal);
+		
+		if (start == null || goal == null) {
+			System.out.println("Start or goal node is null!  No path exists.");
+			return new LinkedList<GeographicPoint>();
+		}
+		
+		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<GeographicPoint, GeographicPoint>();
+		boolean found = bfsSearch(start, goal, parentMap);
 
-		return null;
+		if (!found) {
+			System.out.println("No path exists");
+			return new LinkedList<GeographicPoint>();
+		}
+		
+		// reconstruct the path
+		return constructPath(start, goal, parentMap);
+	}
+	
+	// reconstruct the path
+	private List<GeographicPoint> constructPath(GeographicPoint start, GeographicPoint goal, HashMap<GeographicPoint, GeographicPoint> parentMap) {
+		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
+		GeographicPoint curr = goal;
+		while (curr != start) {
+			path.addFirst(curr);
+			curr = parentMap.get(curr);
+		}
+		path.addFirst(start);
+		System.out.println("path: " + convertList(path));
+		return path;
+	}
+	
+	// do the actual bfs serach and fill the HashMap parentMap along the way
+	private boolean bfsSearch(GeographicPoint start, GeographicPoint goal, HashMap<GeographicPoint, GeographicPoint> parentMap) {
+		
+		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
+		Queue<GeographicPoint> toExplore = new LinkedList<GeographicPoint>();
+		
+		toExplore.add(start);
+		boolean found = false;
+		
+		// Do the search
+		while (!toExplore.isEmpty()) {
+			System.out.println("\nqueue: " + convertQueue(toExplore));
+			System.out.println("visited: " + convertHashSet(visited));
+			
+			GeographicPoint curr = toExplore.remove();
+			System.out.println("Comparing values of curr and goal..");
+			System.out.println("curr: " + tempDict.get(curr) + " -> " + curr);
+			System.out.println("goal: " + tempDict.get(goal) + " -> " + goal);
+			System.out.println("curr.distance(goal) == : " + curr.distance(goal));
+			if (curr.distance(goal) == 0) {
+				found = true;
+				break;
+			}
+			MapNode currMapNode = graphNodesHashMap.get(curr);
+			List<GeographicPoint> neighbors = currMapNode.getMapNodeNeighborsAsPoints();
+			System.out.println("curr's neighbors: " + convertList(neighbors));
+			
+			ListIterator<GeographicPoint> it = neighbors.listIterator(neighbors.size());
+			while (it.hasPrevious()) {
+				GeographicPoint next = it.previous();
+				if (!visited.contains(next)) {
+					visited.add(next);
+					parentMap.put(next, curr);
+					toExplore.add(next);
+				}
+			}
+		}
+		return found;
+	}
+	
+	private Queue<Integer> convertQueue(Queue<GeographicPoint> pointQueue) {
+		Queue<Integer> integerQueue = new LinkedList<Integer>();
+		for (GeographicPoint point: pointQueue) {
+			integerQueue.add(tempDict.get(point));
+		}
+		return integerQueue;
+	}
+	
+	private HashSet<Integer> convertHashSet(HashSet<GeographicPoint> pointHashSet) {
+		HashSet<Integer> integerHashSet = new HashSet<Integer>();
+		for (GeographicPoint point: pointHashSet) {
+			integerHashSet.add(tempDict.get(point));
+		}
+		return integerHashSet;
+	}
+	
+	private List<Integer> convertList(List<GeographicPoint> pointList) {
+		List<Integer> integerList = new LinkedList<Integer>();
+		for (GeographicPoint point: pointList) {
+			integerList.add(tempDict.get(point));
+		}
+		return integerList;
 	}
 
 	/**
@@ -264,7 +390,14 @@ public class MapGraph {
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
 		System.out.println("DONE.");
-		System.out.println(theMap);
+		//System.out.println(theMap);
+		
+		// test bfs
+		System.out.println("");
+		System.out.println(" ****** Test BFS ******** ");
+		GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
+		GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
+		System.out.println(theMap.bfs(startPoint, endPoint));
 
 		// You can use this method for testing.
 

@@ -53,6 +53,19 @@ public class MapNode {
 	}
 	
 	/**
+	 * Gets the list of neighboring nodes in GeographicPoint format
+	 * 
+	 * @return A list of neighboring nodes in GeographicPoint format
+	 */
+	public List<GeographicPoint> getMapNodeNeighborsAsPoints() {
+		List<GeographicPoint> nodeNeighborsAsPoints = new LinkedList<GeographicPoint>();
+		for (MapEdge mapEdge: nodeEdgesList) {
+			nodeNeighborsAsPoints.add(mapEdge.getEndPoint());
+		}
+		return nodeNeighborsAsPoints;
+	}
+	
+	/**
 	 * Return a String representation of the MapNode
 	 * 
 	 *  @return A String representation of the MapNode
@@ -61,10 +74,10 @@ public class MapNode {
 		String s = "\n\n ***";
 		s += "MapNode with:";
 		s += "\n\t" + "nodelocation: " + nodeLocation;
-		s += "\n\t" + "nodeEdgesList";
-		for (MapEdge edge: nodeEdgesList) {
-			s += edge;
-		}
+		//s += "\n\t" + "nodeEdgesList";
+		//for (MapEdge edge: nodeEdgesList) {
+		//	s += edge;
+		//}
 		return s;
 	}
 

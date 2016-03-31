@@ -61,6 +61,14 @@ public class MapEdge {
 	}
 	
 	/**
+	 * Getter for endPoint
+	 * @return endPoint;
+	 */
+	public GeographicPoint getEndPoint() {
+		return endPoint;
+	}
+	
+	/**
 	 * Getter for roadName
 	 * @return roadName
 	 */

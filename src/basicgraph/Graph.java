@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 
 import util.GraphLoader;
+import week2example.MazeNode;
 
 /**
  * An abstract class that implements a directed graph. The graph may have
@@ -142,6 +146,78 @@ public abstract class Graph {
 		
 		return degreeSequenceList;	
 	}
+	
+	// **************************************************************************************************************************************
+	
+	public List<Integer> bfs(int start, int goal) {
+			
+			// Initialize everything
+			
+			HashMap<Integer, Integer> parentMap = new HashMap<Integer, Integer>();
+			boolean found = bfsSearch(start, goal, parentMap);
+	
+			if (!found) {
+				System.out.println("No path exists");
+				return new LinkedList<Integer>();
+			}
+			
+			// reconstruct the path
+			return constructBfsPath(start, goal, parentMap);
+		}
+		
+	// reconstruct the path
+	private List<Integer> constructBfsPath(Integer start, Integer goal, HashMap<Integer, Integer> parentMap) {
+		LinkedList<Integer> path = new LinkedList<Integer>();
+		Integer curr = goal;
+		while (curr != start) {
+			path.addFirst(curr);
+			curr = parentMap.get(curr);
+		}
+		path.addFirst(start);
+		return path;
+	}
+		
+	// do the actual bfs serach and fill the HashMap parentMap along the way
+	private boolean bfsSearch(Integer start, Integer goal,
+			HashMap<Integer, Integer> parentMap)
+	{
+		HashSet<Integer> visited = new HashSet<Integer>();
+		Queue<Integer> toExplore = new LinkedList<Integer>();
+		toExplore.add(start);
+		boolean found = false;
+		
+		// Do the search
+		while (!toExplore.isEmpty()) {
+			System.out.println("\nqueue: " + toExplore);
+			System.out.println("visited: " + visited);
+			
+			Integer curr = toExplore.remove();
+			System.out.println("Comparing values of curr and goal..");
+			System.out.println("curr: " + curr);
+			System.out.println("goal: " + goal);
+			System.out.println("curr == goal: " + (curr == goal));
+			if (curr == goal) {
+				found = true;
+				break;
+			}
+			List<Integer> neighbors = getNeighbors(curr);
+			System.out.println("curr's neighbors: " + neighbors);
+			
+			ListIterator<Integer> it = neighbors.listIterator(neighbors.size());
+			while (it.hasPrevious()) {
+				Integer next = it.previous();
+				if (!visited.contains(next)) {
+					visited.add(next);
+					parentMap.put(next, curr);
+					toExplore.add(next);
+				}
+			}
+		}
+		return found;
+	}
+	
+	
+	// ***************************************************************************************************************************************
 
 	/**
 	 * Get all the vertices that are 2 away from the vertex in question.
@@ -286,6 +362,10 @@ public abstract class Graph {
 		System.out.println("****");
 
 		System.out.println("\n****");
+		
+		System.out.println(" **** Test BFS *****");
+		System.out.println(graphFromFile.bfs(0, 5));
+		//System.out.println(graphFromFile.bfs(0,5).size());
 
 		 /*
 		// You can test with real road data here. Use the data files in
