@@ -71,7 +71,7 @@ public class MapNode {
 	 *  @return A String representation of the MapNode
 	 */
 	public String toString() {
-		String s = "\n\t" + "nodelocation: " + nodeLocation + " -- neighbors -> ";
+		String s = "\n\t" + "nodelocation: " + nodeLocation + "   neighbors ->  ";
 		s += "" + getMapNodeNeighborsAsPoints();
 		//s += "\n\t" + "nodeEdgesList";
 		//for (MapEdge edge: nodeEdgesList) {

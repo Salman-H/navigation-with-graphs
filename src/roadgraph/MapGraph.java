@@ -1,6 +1,6 @@
 /**
- * @author UCSD MOOC development team
  * @author Salman Hashmi
+ * @author UCSD MOOC development team
  * 
  * A class which reprsents a graph of geographic locations
  * Nodes in the graph are intersections between 
@@ -22,11 +22,11 @@ import util.GraphLoader;
 
 
 /**
- * @author UCSD MOOC development team
  * @author Salman Hashmi
+ * @author UCSD MOOC development team
  * 
- *         A class which represents a graph of geographic locations Nodes in the
- *         graph are intersections between
+ *         A class which represents a graph of geographic locations/coordinates of
+ *         road intersections which are the nodes in the graph defined by the MapNode class
  *
  */
 public class MapGraph {
@@ -34,19 +34,6 @@ public class MapGraph {
 	private HashMap<GeographicPoint, MapNode> graphNodesHashMap;
 	private int numNodes;
 	private int numEdges;
-	
-	GeographicPoint zero = new GeographicPoint(1.0, 1.0);
-	GeographicPoint one = new GeographicPoint(4.0, 1.0);
-	GeographicPoint two = new GeographicPoint(4.0, 2.0);
-	GeographicPoint three = new GeographicPoint(5.0, 1.0);
-	GeographicPoint four = new GeographicPoint(6.5, 0.0);
-	GeographicPoint five = new GeographicPoint(8.0, -1.0);
-	GeographicPoint six = new GeographicPoint(4.0, 0.0);
-	GeographicPoint seven = new GeographicPoint(7.0, 3.0);
-	GeographicPoint eight = new GeographicPoint(4.0, -1.0);
-	
-	
-	HashMap<GeographicPoint, Integer> tempDict = new HashMap<GeographicPoint, Integer>();
 
 	/**
 	 * Create a new empty MapGraph
@@ -56,16 +43,6 @@ public class MapGraph {
 		graphNodesHashMap = new HashMap<GeographicPoint, MapNode>();
 		numNodes = 0;
 		numEdges = 0;
-		
-		tempDict.put(zero, 0);
-		tempDict.put(one, 1);
-		tempDict.put(two, 2);
-		tempDict.put(three, 3);
-		tempDict.put(four, 4);
-		tempDict.put(five, 5);
-		tempDict.put(six, 6);
-		tempDict.put(seven, 7);
-		tempDict.put(eight, 8);
 	}
 
 	/**
@@ -111,8 +88,9 @@ public class MapGraph {
 	public boolean addVertex(GeographicPoint location) {
 		// TODO: Implement this method in WEEK 2
 		if (graphNodesHashMap.containsKey(location) || location == null) return false;
-		// otherwise..
+		// otherwise add the node
 		graphNodesHashMap.put(location, new MapNode(location));
+		// and increment node count
 		numNodes++;
 		return true;
 	}
@@ -211,16 +189,18 @@ public class MapGraph {
 		
 		if (start == null || goal == null) {
 			System.out.println("Start or goal node is null!  No path exists.");
-			//return new LinkedList<GeographicPoint>();
 			return null;
 		}
 		
+		// the List to be returned outlining the desired path is constructed from this HashMap
 		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<GeographicPoint, GeographicPoint>();
+		
+		// call the bfsSearch helper method to perform the actual search
 		boolean found = bfsSearch(start, goal, parentMap);
-
+		
+		// if no path found, return null
 		if (!found) {
 			System.out.println("No path exists");
-			//return new LinkedList<GeographicPoint>();
 			return null;
 		}
 		
@@ -228,7 +208,14 @@ public class MapGraph {
 		return constructPath(start, goal, parentMap);
 	}
 	
-	// reconstruct the path
+	/**
+	 * Constructs the found path from the HashMap parentMap 
+	 * 
+	 * @param start:		The starting location
+	 * @param goal:			The goal location
+	 * @param parentMap:	The HashMap that keeps track of the path followed during the search
+	 * @return:				The List of nodes as Geographic Point objects that represent the found path
+	 */
 	private List<GeographicPoint> constructPath(GeographicPoint start, GeographicPoint goal, HashMap<GeographicPoint, GeographicPoint> parentMap) {
 		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
 		GeographicPoint curr = goal;
@@ -240,7 +227,14 @@ public class MapGraph {
 		return path;
 	}
 	
-	// do the actual bfs serach and fill the HashMap parentMap along the way
+	/**
+	 * Perform the actual BFS search and fill the HashMap parentMap along the way
+	 * 
+	 * @param start:		The starting location
+	 * @param goal:			The goal location
+	 * @param parentMap:	The HashMap that keeps track of the path followed during the search
+	 * @return:				True if a path exists from start to goal, false otherwise 
+	 */
 	private boolean bfsSearch(GeographicPoint start, GeographicPoint goal, HashMap<GeographicPoint, GeographicPoint> parentMap) {
 		
 		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
@@ -260,6 +254,10 @@ public class MapGraph {
 				found = true;
 				break;
 			}
+			
+			// curr is a GeographicPoint object. To find its neighbors, we first
+			// get the corresponding MapNode using our graphNodesHashMap. Then, we
+			// use the appropriate method in the MapNode class to the get the neighbors
 			MapNode currMapNode = graphNodesHashMap.get(curr);
 			List<GeographicPoint> neighbors = currMapNode.getMapNodeNeighborsAsPoints();
 			
@@ -366,10 +364,10 @@ public class MapGraph {
 		System.out.println(theMap);
 		
 		// test bfs
-		System.out.println("");
-		System.out.println(" ****** Test BFS ******** ");
-		GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
-		GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
+		//System.out.println("");
+		//System.out.println(" ****** Test BFS ******** ");
+		//GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
+		//GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
 		//System.out.println(theMap.bfs(startPoint, endPoint));
 
 		// You can use this method for testing.
