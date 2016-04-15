@@ -369,12 +369,21 @@ public class MapGraph {
 		System.out.println(theMap);
 		
 		// test bfs
-		System.out.println("");
-		System.out.println(" ****** Test BFS ******** ");
-		GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
-		GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
-		System.out.println(theMap.bfs(startPoint, endPoint));
+		//System.out.println("");
+		//System.out.println(" ****** Test BFS ******** ");
+		//GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
+		//GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
+		//System.out.println(theMap.bfs(startPoint, endPoint));
 
+		// Edge Distance Testing
+		System.out.println("");
+		System.out.println(" ****** Test Edge Distance ******** ");
+		GeographicPoint point = new GeographicPoint(4.0, 1.0);
+		MapNode node = theMap.graphNodesHashMap.get(point);
+		System.out.println(node);
+		System.out.println(node.hasEdge("main"));
+		System.out.println(node.getEdgeList());
+		
 		// You can use this method for testing.
 
 		/*

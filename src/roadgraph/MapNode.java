@@ -58,6 +58,14 @@ public class MapNode {
 	}
 	
 	/**
+	 * Getter for nodeEdgesList
+	 * @return nodeEdgesList
+	 */
+	public List<MapEdge> getEdgeList() {
+		return nodeEdgesList;
+	}
+	
+	/**
 	 * Gets the list of neighboring nodes in GeographicPoint format
 	 * 
 	 * @return A list of neighboring nodes in GeographicPoint format
