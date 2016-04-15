@@ -32,6 +32,7 @@ public class MapNode {
 	public MapNode(GeographicPoint nodeLocation) {
 		this.nodeLocation = nodeLocation;
 		nodeEdgesList = new LinkedList<MapEdge>();
+		this.currentDistanceFromStartNode = Double.POSITIVE_INFINITY;
 	}
 	
 	/**
