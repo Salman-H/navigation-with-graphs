@@ -17,8 +17,12 @@ import java.util.LinkedList;
  *
  */
 public class MapNode {
+	/**
+	 * Member variables / fields
+	 */
 	private GeographicPoint nodeLocation;
 	private List<MapEdge> nodeEdgesList;
+	private double currentDistanceFromStartNode;
 	
 	/**
 	 * Constructor
@@ -63,6 +67,22 @@ public class MapNode {
 			nodeNeighborsAsPoints.add(mapEdge.getEndPoint());
 		}
 		return nodeNeighborsAsPoints;
+	}
+	
+	/**
+	 * Setter for currentDistanceFromStartNode
+	 * @param currentDistanceFromStartNode
+	 */
+	public void setCurrentDistance(double currentDistanceFromStartNode) {
+		this.currentDistanceFromStartNode = currentDistanceFromStartNode;
+	}
+	
+	/**
+	 * Getter for currentDistanceFromStartNode
+	 * @return currentDistanceFromStartNode
+	 */
+	public double getCurrentDistance() {
+		return currentDistanceFromStartNode;
 	}
 	
 	/**
