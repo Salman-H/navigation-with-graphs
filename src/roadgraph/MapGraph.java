@@ -196,7 +196,7 @@ public class MapGraph {
 		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<GeographicPoint, GeographicPoint>();
 		
 		// call the bfsSearch helper method to perform the actual search
-		boolean found = bfsSearch(start, goal, parentMap);
+		boolean found = bfsSearch(start, goal, parentMap, nodeSearched);
 		
 		// if no path found, return null
 		if (!found) {
@@ -235,7 +235,7 @@ public class MapGraph {
 	 * @param parentMap:	The HashMap that keeps track of the path followed during the search
 	 * @return:				True if a path exists from start to goal, false otherwise 
 	 */
-	private boolean bfsSearch(GeographicPoint start, GeographicPoint goal, HashMap<GeographicPoint, GeographicPoint> parentMap) {
+	private boolean bfsSearch(GeographicPoint start, GeographicPoint goal, HashMap<GeographicPoint, GeographicPoint> parentMap, Consumer<GeographicPoint> nodeSearched) {
 		
 		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
 		Queue<GeographicPoint> toExplore = new LinkedList<GeographicPoint>();
@@ -259,11 +259,16 @@ public class MapGraph {
 			// get the corresponding MapNode using our graphNodesHashMap. Then, we
 			// use the appropriate method in the MapNode class to the get the neighbors
 			MapNode currMapNode = graphNodesHashMap.get(curr);
+			
 			List<GeographicPoint> neighbors = currMapNode.getMapNodeNeighborsAsPoints();
 			
 			ListIterator<GeographicPoint> it = neighbors.listIterator(neighbors.size());
 			while (it.hasPrevious()) {
 				GeographicPoint next = it.previous();
+				// ******************************
+				// Report node to consumer as it is explored
+				nodeSearched.accept(next);
+				// ******************************
 				if (!visited.contains(next)) {
 					visited.add(next);
 					parentMap.put(next, curr);
@@ -364,11 +369,11 @@ public class MapGraph {
 		System.out.println(theMap);
 		
 		// test bfs
-		//System.out.println("");
-		//System.out.println(" ****** Test BFS ******** ");
-		//GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
-		//GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
-		//System.out.println(theMap.bfs(startPoint, endPoint));
+		System.out.println("");
+		System.out.println(" ****** Test BFS ******** ");
+		GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
+		GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
+		System.out.println(theMap.bfs(startPoint, endPoint));
 
 		// You can use this method for testing.
 
