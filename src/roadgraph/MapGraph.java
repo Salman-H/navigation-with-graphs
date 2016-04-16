@@ -10,6 +10,7 @@ package roadgraph;
 
 import java.util.List;
 import java.util.ListIterator;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -385,6 +386,9 @@ public class MapGraph {
 		System.out.println(node.hasEdge("main"));
 		//System.out.println(node.getEdgeList());
 		System.out.println(node.getEdgeTo(point2));
+		
+		// PriorityQueue Testing
+		Queue<GeographicPoint> pq1 = new PriorityQueue<GeographicPoint>();
 		
 		// You can use this method for testing.
 
