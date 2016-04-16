@@ -16,7 +16,7 @@ import java.util.LinkedList;
  * 			A class that represents a node or vertex in  MapGraph (an intersection on our map)
  *
  */
-public class MapNode {
+public class MapNode implements Comparable<MapNode>{
 	/**
 	 * Member variables / fields
 	 */
@@ -108,6 +108,20 @@ public class MapNode {
 	 */
 	public double getCurrentDistance() {
 		return currentDistanceFromStartNode;
+	}
+	
+	/**
+	 * Compares this MapNode with some other MapNode by their currentDistanceFromStartNode fields
+	 * 
+	 * @param a MapNode otherNode
+	 * @return an int; -1 if thisCurrentDistance is less than the other's, 0 if they are the same, 1 otherwise
+	 */
+	@Override 
+	public int compareTo(MapNode otherNode) {
+		Double thisCurrentDistance = new Double(this.getCurrentDistance());
+		Double otherCurrentDistance = new Double(otherNode.getCurrentDistance());
+		
+		return (thisCurrentDistance.compareTo(otherCurrentDistance));
 	}
 	
 	/**
