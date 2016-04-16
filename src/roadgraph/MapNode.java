@@ -66,6 +66,23 @@ public class MapNode {
 	}
 	
 	/**
+	 * Gets the MapEdge from this MapNode to the specified MapNode
+	 * @return a MapEdge
+	 */
+	public MapEdge getEdgeTo(GeographicPoint toPoint) throws IllegalArgumentException {
+		// testing toPoint
+		System.out.println("toPoint: " + toPoint);
+		if (toPoint == null) throw new IllegalArgumentException();
+		
+		for (MapEdge mapEdge: nodeEdgesList) {
+			if (mapEdge.getEndPoint().distance(toPoint) == 0) {
+				return mapEdge;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Gets the list of neighboring nodes in GeographicPoint format
 	 * 
 	 * @return A list of neighboring nodes in GeographicPoint format

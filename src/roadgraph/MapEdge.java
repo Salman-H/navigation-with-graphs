@@ -24,6 +24,14 @@ public class MapEdge {
 	private double roadDistance;
 	
 	/**
+	 * no-argument constructor
+	 */
+	public MapEdge() {
+		this.startPoint = null;
+		this.endPoint = null;
+	}
+	
+	/**
 	 * Constructor
 	 * @param startPoint
 	 * @param endPoint

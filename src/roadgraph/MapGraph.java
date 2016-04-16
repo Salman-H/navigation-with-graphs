@@ -379,10 +379,12 @@ public class MapGraph {
 		System.out.println("");
 		System.out.println(" ****** Test Edge Distance ******** ");
 		GeographicPoint point = new GeographicPoint(4.0, 1.0);
+		GeographicPoint point2 = new GeographicPoint(7.0, 3.0);
 		MapNode node = theMap.graphNodesHashMap.get(point);
 		System.out.println(node);
 		System.out.println(node.hasEdge("main"));
-		System.out.println(node.getEdgeList());
+		//System.out.println(node.getEdgeList());
+		System.out.println(node.getEdgeTo(point2));
 		
 		// You can use this method for testing.
 
