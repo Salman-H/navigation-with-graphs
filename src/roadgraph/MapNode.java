@@ -36,6 +36,15 @@ public class MapNode implements Comparable<MapNode>{
 	}
 	
 	/**
+	 * Getter for the nodeLocation field
+	 * 
+	 * @return the GeographicPoint nodeLocation of this MapNode
+	 */
+	public GeographicPoint getNodeLocation() {
+		return nodeLocation;
+	}
+	
+	/**
 	 * adds the specified MapEdge to the nodeEdgesList of the MapNode
 	 * 
 	 * @param edge
