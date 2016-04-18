@@ -380,7 +380,8 @@ public class MapGraph {
 		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<GeographicPoint, GeographicPoint>();
 		
 		// call the dijkstraSearch helper method to perform the actual search
-		boolean found = dijkstraSearch(start, goal, parentMap, nodeSearched);
+		
+		boolean found = graphSearchAlgorithm("dijkstra", start, goal, parentMap, nodeSearched);
 		
 		// if no path found, return null
 		if (!found) {
@@ -394,145 +395,6 @@ public class MapGraph {
 		//return null;
 	}
 	
-	/**
-	 * Perform the actual Dijkstra search and fill the HashMap parentMap along the way
-	 * 
-	 * @param start:		The starting location
-	 * @param goal:			The goal location
-	 * @param parentMap:	The HashMap that keeps track of the path followed during the search
-	 * @return:				True if a path exists from start to goal, false otherwise 
-	 */
-	private boolean dijkstraSearch(GeographicPoint start, GeographicPoint goal, HashMap<GeographicPoint, GeographicPoint> parentMap, Consumer<GeographicPoint> nodeSearched) {
-		
-		/*
-		 *  Initialize: Priority Queue, visited HashSet, parent HashMap, and distance to infinity
-		 */
-		HashSet<MapNode> visited = new HashSet<MapNode>();
-		PriorityQueue<MapNode> toExplore = new PriorityQueue<MapNode>();
-		// currentDistanceFromStartNode for any MapNode is set to positive infinity by default
-		
-		/*
-		 * Enqueue {S, currentDistance=0} onto the PQ
-		 */
-		//toExplore.add(start);
-		MapNode startNode = graphNodesHashMap.get(start);
-		startNode.setCurrentDistance(0);
-		toExplore.add(startNode);
-		
-		boolean found = false;
-		
-		/*
-		 * while PQ is not empty:
-		 */
-		// Do the search
-		
-		// ******* testing ********
-		int count = 1;
-		
-		while (!toExplore.isEmpty()) {
-			/*
-			 * dequeue node currNode from front of queue
-			 */
-			//GeographicPoint currNode = toExplore.remove();
-			MapNode currNode = toExplore.remove();
-			
-			/*
-			 * if (currNode is not visited)
-			 */
-			if ( !visited.contains(currNode) ) {
-				/*
-				 * add currNode to visited set
-				 */
-				// ********** Testing *************
-				System.out.println("");
-				System.out.println("Node " + count + ": " + currNode.getNodeLocation());
-				count++;
-				
-				visited.add(currNode);
-				
-				/*
-				 * if currNode == goal location; return parent map
-				 */
-				GeographicPoint currPoint = currNode.getNodeLocation();
-				if (currPoint.distance(goal) == 0) {
-					found = true;
-					break;
-				}
-				
-				// get currNode's currentDistanceFromStartNode
-				double currNodeCurrentDistance = currNode.getCurrentDistance();
-				
-				List<GeographicPoint> neighborLocationsList = currNode.getMapNodeNeighborsAsPoints();
-				ListIterator<GeographicPoint> it = neighborLocationsList.listIterator(neighborLocationsList.size());
-				
-				while (it.hasPrevious()) {
-				//for (GeographicPoint neighborLocation: neighborLocationsList) {
-					
-					GeographicPoint next = it.previous();
-					
-					// Report node to consumer as it is explored for visualization
-					nodeSearched.accept(next);
-					
-					// ..for those neighbors, n, not in visited set already:
-					 if (!visited.contains(graphNodesHashMap.get(next))) {
-					//if (!visited.contains(graphNodesHashMap.get(neighborLocation))) {
-						
-						// get neighbor node from neighbor location
-						//MapNode neighborNode = graphNodesHashMap.get(neighborLocation);
-						MapNode nextNode = graphNodesHashMap.get(next);
-						
-						// get currNode's currentDistanceFromStartNode
-						//double neighborNodeCurrentDistance = neighborNode.getCurrentDistance();
-						double nextNodeCurrentDistance = nextNode.getCurrentDistance();
-						
-						// get edge from currNode to the current neighborNode
-						//MapEdge currToNeighborEdge = currNode.getEdgeTo(neighborLocation);
-						MapEdge currToNextEdge = currNode.getEdgeTo(next);
-						
-						// get distance of currToNeighborEdge
-						//double currToNeighborEdgeDistance = currToNeighborEdge.getRoadDistance();
-						double currToNextEdgeDistance = currToNextEdge.getRoadDistance();
-						
-						// get distance of path from start to neighborNode through currNode
-						//double startThroughCurrToNeighborPathDistance = currNodeCurrentDistance + currToNeighborEdgeDistance;
-						double startThroughCurrToNeighborPathDistance = currNodeCurrentDistance + currToNextEdgeDistance;
-						
-						/*
-						 * if path through currNode to neighborNode is shorter (than n's currentDistanceFromStartNode)
-						 */
-						//if (startThroughCurrToNeighborPathDistance < neighborNodeCurrentDistance) {
-						if (startThroughCurrToNeighborPathDistance < nextNodeCurrentDistance) {	
-							/*
-							 * update n's distance (from start through currNode to n)
-							 */
-							// updated currentDistanceFromStartNode of neighborNode = currNode's currentDistanceFromStartNode + edge distance from currNode to neighborNode
-							//double updatedDistance = currNodeCurrentDistance + currToNeighborEdgeDistance;
-							double updatedDistance = currNodeCurrentDistance + currToNextEdgeDistance;
-							//neighborNode.setCurrentDistance(updatedDistance);	
-							nextNode.setCurrentDistance(updatedDistance);	
-							
-							/*
-							 * update currNode as n's parent in parent map
-							 */
-							//parentMap.put(currNode.getNodeLocation(), neighborNode.getNodeLocation());
-							parentMap.put(next, currNode.getNodeLocation());
-							
-							/*
-							 * Enqueue {n, distance} onto the PQ
-							 */
-							//toExplore.add(neighborNode);
-							toExplore.add(nextNode);
-						}
-					}
-				}
-			}
-		}
-		// ******** testing **********
-		System.out.println("");
-		System.out.println("Dijkstra: visited nodes after search:");
-		System.out.println(visited);
-		return found;
-	}
 
 	/**
 	 * Find the path from start to goal using A-Star search
@@ -570,17 +432,181 @@ public class MapGraph {
 
 		// Hook for visualization. See writeup.
 		// nodeSearched.accept(next.getLocation());
-
-		return null;
+		
+		System.out.println("");
+		System.out.println(" *** A* ***");
+		System.out.println(" start: " + start);
+		System.out.println(" goal: " + goal);
+		
+		if (start == null || goal == null) {
+			System.out.println("Start or goal node is null!  No path exists.");
+			return null;
+		}
+		
+		// the List to be returned outlining the desired path is constructed from this HashMap
+		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<GeographicPoint, GeographicPoint>();
+		
+		// call the dijkstraSearch helper method to perform the actual search
+		//boolean found = aStarSearchAlgorithm(start, goal, parentMap, nodeSearched);
+		
+		boolean found = graphSearchAlgorithm("astar", start, goal, parentMap, nodeSearched);
+		
+		// if no path found, return null
+		if (!found) {
+			System.out.println("No path exists");
+			return null;
+		}
+		
+		// reconstruct the path
+		return constructPath(start, goal, parentMap);
 	}
+	
+	/**
+	 * Perform the actual graph search (for Dijkstra or A*) and fill the HashMap parentMap along the way
+	 * 
+	 * @param algoName:		The name of the algorithm search which is to be implemented
+	 * @param start:		The starting location
+	 * @param goal:			The goal location
+	 * @param parentMap:	The HashMap that keeps track of the path followed during the search
+	 * @return:				True if a path exists from start to goal, false otherwise 
+	 * 
+	 * g(n): actual current distance from start to n
+	 * h(n): straight-line distance from n to goal
+	 * f(n): predicted distance = g(n) from start to n + h(n) from n to goal
+	 * 
+	 */
+	private boolean graphSearchAlgorithm(String algoName, GeographicPoint start, GeographicPoint goal, HashMap<GeographicPoint, GeographicPoint> parentMap, Consumer<GeographicPoint> nodeSearched) {
+
+		/** Initialize: visited HashSet, Priority Queue **/
+		HashSet<MapNode> visitedSet = new HashSet<MapNode>();
+		PriorityQueue<MapNode> toExplorePQ = new PriorityQueue<MapNode>();
+		
+		/** Initialize: g(n) and f(n) to positive infinity for all graph MapNodes **/
+		for (MapNode node: graphNodesHashMap.values()) {
+			node.setCurrentDistance(Double.POSITIVE_INFINITY);
+			node.setPredictedDistance(Double.POSITIVE_INFINITY);
+		}
+		
+		MapNode startNode = graphNodesHashMap.get(start);
+		
+		/** Initialize: g(n) and f(n) to positive infinity for the startNode **/
+		startNode.setCurrentDistance(0);
+		startNode.setPredictedDistance(0);
+		
+		/** Enqueue {S, currentDistance=0} onto the PQ **/
+		toExplorePQ.add(startNode);
+		
+		boolean found = false;
+		int visitedNodeCount = 1;
+		
+		/** while PQ is not empty: Do the search **/
+		while (!toExplorePQ.isEmpty()) {
+			
+			/** dequeue node currNode from front of queue **/
+			MapNode currNode = toExplorePQ.remove();
+			
+			// Testing the order of Node visits
+			System.out.println("");
+			System.out.println("Node " + visitedNodeCount + ": " + currNode.getNodeLocation());
+			visitedNodeCount++;
+			
+			/** if (currNode is not visited) **/
+			if ( !visitedSet.contains(currNode) ) {
+				
+				/** add currNode to visited set **/
+				visitedSet.add(currNode);
+				
+				/** if currNode == goal location; return parent map **/
+				GeographicPoint currPoint = currNode.getNodeLocation();
+				if (currPoint.distance(goal) == 0) {
+					found = true;
+					break;
+				}
+				// Else visitNeighbors and do all the associated work
+				visitNeighbors(algoName, currNode, goal, visitedSet, toExplorePQ, parentMap, nodeSearched);
+			}
+		}
+		// outside loop
+		return found;
+	}
+	
+	/*
+	 * private helper method for performing the work associated with visiting neighbors in the Dijkstra and A* algorithms
+	 */
+	private void visitNeighbors(String algoName, MapNode currNode, GeographicPoint goal, HashSet<MapNode> visitedSet, 
+			PriorityQueue<MapNode> toExplorePQ, HashMap<GeographicPoint, GeographicPoint> parentMap, Consumer<GeographicPoint> nodeSearched) {
+		
+		// get currNode's g(n): currentDistance
+		double currNodeCurrentDistance = currNode.getCurrentDistance();
+		
+		List<GeographicPoint> neighborLocationsList = currNode.getMapNodeNeighborsAsPoints();
+		
+		ListIterator<GeographicPoint> it = neighborLocationsList.listIterator(neighborLocationsList.size());
+		
+		// while there are still neighbor nodes in the list iterator..
+		while (it.hasPrevious()) {
+			
+			// get the next node (starting from the end of the list)
+			GeographicPoint nextPoint = it.previous();
+			
+			/** Report next node, as it is explored, to consumer for visualization **/
+			nodeSearched.accept(nextPoint);
+			
+			// ..for those neighbors, n, not in visited set already:
+			 if (!visitedSet.contains(graphNodesHashMap.get(nextPoint))) {
+				 
+				// get next neighbor node from neighbor location
+				MapNode nextNode = graphNodesHashMap.get(nextPoint);
+				
+				// get currNode's currentDistance
+				double nextNodeCurrentDistance = nextNode.getCurrentDistance();
+				
+				// get edge from currNode to the current neighborNode
+				MapEdge currToNextEdge = currNode.getEdgeTo(nextPoint);
+				
+				// get distance of currToNeighborEdge
+				double currToNextEdgeDistance = currToNextEdge.getRoadDistance();
+				
+				// get distance of path from start to neighborNode through currNode
+				double startThroughCurrToNeighborPathDistance = currNodeCurrentDistance + currToNextEdgeDistance;
+				
+				// get straight-line distance from neighbor to goal (set to 0 by default for dijkstra)
+				double straightLineDistanceFromNeighborToGoal = 0.0;	// Dijkstra: f(n) = g(n) + 0
+				
+				if (algoName.equals("astar")) {
+					straightLineDistanceFromNeighborToGoal = nextPoint.distance(goal);	
+				}
+				
+				// total predicted distance from start to goal
+				double totalPredictedDistance = startThroughCurrToNeighborPathDistance + straightLineDistanceFromNeighborToGoal;
+				
+				/** if path through currNode to neighborNode is shorter than n's currentDistance g(n) **/
+				if (startThroughCurrToNeighborPathDistance < nextNodeCurrentDistance) {	
+					
+					/** update n's distance (from start through currNode to n + straight line from n to goal) **/
+					nextNode.setCurrentDistance(startThroughCurrToNeighborPathDistance);	
+					nextNode.setPredictedDistance(totalPredictedDistance);
+					
+					/** update currNode as n's parent in parent map **/
+					parentMap.put(nextPoint, currNode.getNodeLocation());
+					
+					/** Enqueue {n, distance} onto the PQ **/
+					toExplorePQ.add(nextNode);
+				}
+			}
+		} 
+	}
+	
 
 	public static void main(String[] args) {
+		
 		System.out.print("Making a new map...");
 		MapGraph theMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
 		System.out.println("DONE.");
 		System.out.println(theMap);
+		
 		
 		// test bfs
 		//System.out.println("");
@@ -590,6 +616,7 @@ public class MapGraph {
 		//System.out.println(theMap.bfs(startPoint, endPoint));
 
 		// Edge Distance Testing
+		/*
 		System.out.println("");
 		System.out.println(" ****** Test Edge Distance ******** ");
 		GeographicPoint point1 = new GeographicPoint(4.0, 1.0);
@@ -605,6 +632,7 @@ public class MapGraph {
 		System.out.println(" ****** Test Straight-Line Distance ******** ");
 		System.out.println(point1 + " to " + point2 + " is: ");
 		System.out.println(point1.distance(point2));
+		*/
 		
 		// neighbors of a MapNode testing
 		/*
@@ -628,16 +656,21 @@ public class MapGraph {
 		} */
 		
 		
-		// test Dijkstra
-		System.out.println("");
-		System.out.println(" ****** Test Dijkstra ******** ");
+		// Testing graphSearchAlgorithm for Dijkstra and A*
 		GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
 		GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
 		//GeographicPoint startPoint = new GeographicPoint(8.0, -1.0);
 		//GeographicPoint endPoint = new GeographicPoint(1.0, 1.0);
+		
+		// test Dijkstra
+		System.out.println("");
+		System.out.println(" ****** Test Dijkstra ******** ");
 		System.out.println(theMap.dijkstra(startPoint, endPoint));
 		
-		// You can use this method for testing.
+		// test A*
+		System.out.println("");
+		System.out.println(" ****** Test A* ******** ");
+		System.out.println(theMap.aStarSearch(startPoint, endPoint));
 
 		/*
 		 * Use this code in Week 3 End of Week Quiz MapGraph theMap = new
@@ -654,7 +687,6 @@ public class MapGraph {
 		 * List<GeographicPoint> route2 = theMap.aStarSearch(start,end);
 		 * 
 		 */
-
 	}
 
 }

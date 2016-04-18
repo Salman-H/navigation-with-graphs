@@ -22,10 +22,14 @@ public class MapNode implements Comparable<MapNode>{
 	 */
 	private GeographicPoint nodeLocation;
 	private List<MapEdge> nodeEdgesList;
+	/*
+	 * currentDistanceFromStartNode g(n): actual current distance from start through this node to n 
+	 * currentPredictedDistance f(n): predicted distance = g(n) from start to n + h(n) from n to goal
+	 * where h(n): straight-line distance from n to goal
+	 */
 	private double currentDistanceFromStartNode;
-	
-	// the actual distance from start to this node + the straight line distance from this node to goal
 	private double currentPredictedDistance;
+	
 	
 	/**
 	 * Constructor
@@ -147,8 +151,8 @@ public class MapNode implements Comparable<MapNode>{
 	 */
 	@Override 
 	public int compareTo(MapNode otherNode) {
-		Double thisCurrentDistance = new Double(this.getCurrentDistance());
-		Double otherCurrentDistance = new Double(otherNode.getCurrentDistance());
+		Double thisCurrentDistance = new Double(this.getPredictedDistance());
+		Double otherCurrentDistance = new Double(otherNode.getPredictedDistance());
 		
 		return (thisCurrentDistance.compareTo(otherCurrentDistance));
 	}
