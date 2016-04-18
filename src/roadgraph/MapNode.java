@@ -24,6 +24,9 @@ public class MapNode implements Comparable<MapNode>{
 	private List<MapEdge> nodeEdgesList;
 	private double currentDistanceFromStartNode;
 	
+	// the actual distance from start to this node + the straight line distance from this node to goal
+	private double currentPredictedDistance;
+	
 	/**
 	 * Constructor
 	 * 
@@ -33,6 +36,7 @@ public class MapNode implements Comparable<MapNode>{
 		this.nodeLocation = nodeLocation;
 		nodeEdgesList = new LinkedList<MapEdge>();
 		this.currentDistanceFromStartNode = Double.POSITIVE_INFINITY;
+		this.currentPredictedDistance = Double.POSITIVE_INFINITY;
 	}
 	
 	/**
@@ -117,6 +121,22 @@ public class MapNode implements Comparable<MapNode>{
 	 */
 	public double getCurrentDistance() {
 		return currentDistanceFromStartNode;
+	}
+	
+	/**
+	 * Setter for currentPredictedDistance
+	 * @param currentPredictedDistance
+	 */
+	public void setPredictedDistance(double currentPredictedDistance) {
+		this.currentPredictedDistance = currentPredictedDistance;
+	}
+	
+	/**
+	 * Getter for currentPredictedDistance
+	 * @return currentPredictedDistance
+	 */
+	public double getPredictedDistance() {
+		return currentPredictedDistance;
 	}
 	
 	/**
