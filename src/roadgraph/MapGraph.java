@@ -238,21 +238,21 @@ public class MapGraph {
 			
 			// ********** testing ****************
 			//if (counter == 6) break;
-			System.out.println("");
-			System.out.println("while (curr != start)..");
+			//System.out.println("");
+			//System.out.println("while (curr != start)..");
 			
-			System.out.println("curr == " + curr + "added to start of path");
+			//System.out.println("curr == " + curr + "added to start of path");
 			path.addFirst(curr);
-			System.out.println("path: " + path);
+			//System.out.println("path: " + path);
 			
-			System.out.println("curr = parentMap.get( " + curr + " )");
+			//System.out.println("curr = parentMap.get( " + curr + " )");
 			curr = parentMap.get(curr);
-			System.out.println("new curr: " + curr);
+			//System.out.println("new curr: " + curr);
 			
-			System.out.println("next iteration needed?");
-			System.out.println("curr == start?");
-			System.out.println(curr + " == " + start + "?");
-			System.out.println(curr == start);
+			//System.out.println("next iteration needed?");
+			//System.out.println("curr == start?");
+			//System.out.println(curr + " == " + start + "?");
+			//System.out.println(curr == start);
 			
 			// test counter
 			//counter++;
@@ -262,7 +262,7 @@ public class MapGraph {
 		// ********** testing ****************
 		System.out.println("");
 		System.out.println("constructed path:");
-		System.out.println(path);
+		//System.out.println(path);
 		
 		return path;
 	}
@@ -425,6 +425,10 @@ public class MapGraph {
 		 * while PQ is not empty:
 		 */
 		// Do the search
+		
+		// ******* testing ********
+		int count = 1;
+		
 		while (!toExplore.isEmpty()) {
 			/*
 			 * dequeue node currNode from front of queue
@@ -439,6 +443,11 @@ public class MapGraph {
 				/*
 				 * add currNode to visited set
 				 */
+				// ********** Testing *************
+				System.out.println("");
+				System.out.println("Node " + count + ": " + currNode.getNodeLocation());
+				count++;
+				
 				visited.add(currNode);
 				
 				/*
@@ -518,6 +527,10 @@ public class MapGraph {
 				}
 			}
 		}
+		// ******** testing **********
+		System.out.println("");
+		System.out.println("Dijkstra: visited nodes after search:");
+		System.out.println(visited);
 		return found;
 	}
 
@@ -577,17 +590,24 @@ public class MapGraph {
 		//System.out.println(theMap.bfs(startPoint, endPoint));
 
 		// Edge Distance Testing
-		//System.out.println("");
-		//System.out.println(" ****** Test Edge Distance ******** ");
-		//GeographicPoint point = new GeographicPoint(4.0, 1.0);
-		//GeographicPoint point2 = new GeographicPoint(5.0, 1.0);
-		//MapNode node = theMap.graphNodesHashMap.get(point);
+		System.out.println("");
+		System.out.println(" ****** Test Edge Distance ******** ");
+		GeographicPoint point1 = new GeographicPoint(4.0, 1.0);
+		GeographicPoint point2 = new GeographicPoint(5.0, 1.0);
+		MapNode node1 = theMap.graphNodesHashMap.get(point1);
 		//System.out.println(node);
 		//System.out.println(node.hasEdge("main"));
 		//System.out.println(node.getEdgeList());
-		//System.out.println(node.getEdgeTo(point2));
+		System.out.println(node1.getEdgeTo(point2));
 		
+		// Straight-line Distance Testing
+		System.out.println("");
+		System.out.println(" ****** Test Straight-Line Distance ******** ");
+		System.out.println(point1 + " to " + point2 + " is: ");
+		System.out.println(point1.distance(point2));
 		
+		// neighbors of a MapNode testing
+		/*
 		GeographicPoint fourOnePoint = new GeographicPoint(4.0, 1.0);
 		MapNode fourOneNode = theMap.graphNodesHashMap.get(fourOnePoint);
 		
@@ -605,16 +625,16 @@ public class MapGraph {
 		while (it.hasPrevious()) {
 			GeographicPoint next = it.previous();
 			System.out.println(next);
-		}
+		} */
 		
 		
 		// test Dijkstra
 		System.out.println("");
 		System.out.println(" ****** Test Dijkstra ******** ");
-		//GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
-		//GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
-		GeographicPoint startPoint = new GeographicPoint(8.0, -1.0);
-		GeographicPoint endPoint = new GeographicPoint(1.0, 1.0);
+		GeographicPoint startPoint = new GeographicPoint(1.0, 1.0);
+		GeographicPoint endPoint = new GeographicPoint(8.0, -1.0);
+		//GeographicPoint startPoint = new GeographicPoint(8.0, -1.0);
+		//GeographicPoint endPoint = new GeographicPoint(1.0, 1.0);
 		System.out.println(theMap.dijkstra(startPoint, endPoint));
 		
 		// You can use this method for testing.
